@@ -31,14 +31,18 @@ export class App implements OnInit {
   }
 
   READ_tarefas() {
-    this.carregando.set(true); // ✅
-    this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`).subscribe(
-      resultado => {
-        this.Tarefas.set(resultado);
-        this.carregando.set(false); // ✅
-      }
-    );
-  }
+  this.carregando.set(true);
+  this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`).subscribe({
+    next: resultado => {
+      this.Tarefas.set(resultado);
+      this.carregando.set(false);
+    },
+    error: err => {
+      console.log('Erro ao buscar tarefas, tentando novamente...', err);
+      setTimeout(() => this.READ_tarefas(), 3000); // ✅ tenta de novo após 3s
+    }
+  });
+}
 
   DELETE_tarefa(tarefaAserRemovida: Tarefa) {
     const indice = this.Tarefas().indexOf(tarefaAserRemovida);
