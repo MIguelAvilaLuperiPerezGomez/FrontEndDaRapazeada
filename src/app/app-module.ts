@@ -1,6 +1,6 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { App } from './app';
 import { Item } from './item/item';
@@ -12,11 +12,10 @@ import { Item } from './item/item';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideClientHydration(withEventReplay()),
+    provideHttpClient(withFetch()), // ✅ substitui HttpClientModule
   ],
   bootstrap: [App]
 })
